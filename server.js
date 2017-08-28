@@ -8,7 +8,11 @@
 var fs = require('fs');
 var express = require('express');
 var app = express();
-var mongoDbUrl = process.env.MONGODBURL;
+
+var mongodb = require('mongodb');
+var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
+var collection;
+
 
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
@@ -35,23 +39,19 @@ app.route('/_api/package.json')
   });
   
 
-//lets require/import the mongodb native drivers.
-var mongodb = require('mongodb');
-
 //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
 
 // Connection URL. This is where your mongodb server is running.
 
 // Use connect method to connect to the Server
-  MongoClient.connect(mongoDbUrl, function (err, db) {
+  MongoClient.connect(MONGODB_URI, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to', mongoDbUrl);
+    console.log('Connection established to', MONGODB_URI);
 
     // do some work here with the database.
-
     //Close connection
     db.close();
   }
