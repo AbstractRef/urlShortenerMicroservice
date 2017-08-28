@@ -52,6 +52,7 @@ var MongoClient = mongodb.MongoClient;
     console.log('Connection established to', MONGODB_URI);
 
     // do some work here with the database.
+    
     //Close connection
     db.close();
   }
