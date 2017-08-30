@@ -51,7 +51,8 @@ app.route('/_api/package.json')
    //addARecord(db);
     findTerry(db); 
     //Close connection
-    db.close();
+    setTimeout(function(){db.close();}, 1000); 
+    
   }
 });
 
@@ -74,15 +75,15 @@ function addARecord(db){
 
 function findTerry(db){
    var results = db.collection('docs')
-     .find({firstName: { $eq : "Terry" } }, {firstName: 1, lastName: 1, _id: 1 } ).toArray(function(err, doc) {
+     .find({firstName: { $eq : "Kate" } }, {firstName: 1, lastName: 1, _id: 1 } ).toArray(function(err, doc) {
      
     if(doc) { 
         console.log(doc);
-      updateFindCount(db,doc._id); 
+      updateFindCount(db,doc[0]._id); 
 
           
     } else{
-      console.log(err);
+      console.log(err); 
     }
   });
 }
@@ -98,7 +99,8 @@ function updateFindCount(db, uid){
         $inc:{ "findCount" : 1}
       }
       ,function(err,data){
-        console.log(err);
+        console.log("error", err);
+        console.log("data", data);
         if(err) throw err;
       });
 }
