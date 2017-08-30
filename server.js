@@ -49,6 +49,7 @@ app.route('/_api/package.json')
     console.log('Connection established to', MONGODB_URI);
     // do some work here with the database.
    //addARecord(db);
+    findTerry(db); 
     //Close connection
     db.close();
   }
@@ -71,7 +72,36 @@ function addARecord(db){
       
 }
 
-functio fin
+function findTerry(db){
+   var results = db.collection('docs')
+     .find({firstName: { $eq : "Terry" } }, {firstName: 1, lastName: 1, _id: 1 } ).toArray(function(err, doc) {
+     
+    if(doc) { 
+        console.log(doc);
+      updateFindCount(db,doc._id); 
+
+          
+    } else{
+      console.log(err);
+    }
+  });
+}
+
+function updateFindCount(db, uid){
+            console.log("id = ", uid);
+     
+    db.collection('docs').update(
+      {
+        _id: uid
+      },
+      {
+        $inc:{ "findCount" : 1}
+      }
+      ,function(err,data){
+        console.log(err);
+        if(err) throw err;
+      });
+}
 
 app.route('/')
     .get(function(req, res) {
