@@ -39,26 +39,39 @@ app.route('/_api/package.json')
   });
   
 
-//We need to work with "MongoClient" interface in order to connect to a mongodb server.
-var MongoClient = mongodb.MongoClient;
 
-// Connection URL. This is where your mongodb server is running.
 
 // Use connect method to connect to the Server
-  MongoClient.connect(MONGODB_URI, function (err, db) {
+  mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
     console.log('Connection established to', MONGODB_URI);
-
     // do some work here with the database.
-    
+   //addARecord(db);
     //Close connection
     db.close();
   }
 });
 
+function addARecord(db){
+   var collection = db.collection('docs');
+    var firstName = "Kate";
+    var lastName = "Strachan";
 
+    var record = {
+      "firstName": firstName
+    , "lastName": lastName
+    }
+    collection.insert(record,function(err,data){
+        if(err) throw err;
+
+        console.log(JSON.stringify(record));        
+    });
+      
+}
+
+functio fin
 
 app.route('/')
     .get(function(req, res) {
