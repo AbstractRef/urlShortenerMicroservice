@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient
-
+var tst = "Hello"
 var state = {
   db: null,
 }
@@ -15,7 +15,12 @@ exports.connect = function(url, done) {
 }
 
 exports.get = function() {
+  tst = "Goodbye";
   return state.db
+}
+
+exports.getTst = function(){
+  return tst;
 }
 
 exports.close = function(done) {

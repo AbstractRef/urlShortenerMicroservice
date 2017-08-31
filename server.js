@@ -9,8 +9,7 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var mongodbService = require('./mongodbservice').async; 
-var db = require('./db');
-
+const db = require('./db');
 
 
 if (!process.env.DISABLE_XORIGIN) {
@@ -46,12 +45,13 @@ db.connect(MONGODB_URI, function(err) {
     console.log('Unable to connect to Mongo.')
     process.exit(1)
   } else {
-      console.log('Listening  ...');
+      console.log('Listening ...');
     }
   
-}); 
-
-console.log("tst ", db.get()); 
+});
+console.log("tst ", db.getTst()); 
+db.get();
+console.log("tst ", db.getTst()); 
 
     var firstName = "Jackson";
     var lastName = "Strachan";
