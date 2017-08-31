@@ -6,13 +6,14 @@ var state = {
   db: null,
 }
 
-
 function connect(){
+  if (state.db) return;
+  
   mongodb.MongoClient.connect(MONGODB_URI)
     .then(function (db){
      state.db = db; 
       console.log('Connection established to', MONGODB_URI);
-      //console.log(db);
+      return;
     })
     .catch(function (err) {
       console.log('Unable to connect to the mongoDB server. Error:', err);
@@ -20,7 +21,19 @@ function connect(){
     });
 }
 
+function close(){
+  if (state.db) {
+    state.db.close(function(err, result) {
+      state.db = null
+      state.mode = null
+    });
+  }
+}
+
 function getDb() {
+  if (!state.db) {
+    connect();
+  }
   return state.db;
 }
 
@@ -31,15 +44,11 @@ function add(record){
     });
 }
 
-
-function close(){
-  if (state.db) {
-    state.db.close(function(err, result) {
-      state.db = null
-      state.mode = null
-    });
-  }
+function findByUrl(url){
+  return true;
 }
+
+function findByShortCode
 
 var asyncDatastore = {
   // set: set,
