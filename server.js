@@ -8,13 +8,8 @@
 var fs = require('fs');
 var express = require('express');
 var app = express();
+var mongodbService = require('./mongodbservice').async; 
 
-var mongodb = require('mongodb');
-
-var mongodbService = require('./datastore');  
-
-var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
-var collection;
 
 
 if (!process.env.DISABLE_XORIGIN) {
@@ -43,6 +38,7 @@ app.route('/_api/package.json')
   
 
 mongodbService.connect();
+addARecord();
 
 // // Use connect method to connect to the Server 
 //   mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
@@ -59,22 +55,18 @@ mongodbService.connect();
 //   }
 // });
 
-function addARecord(db){
-   var collection = db.collection('docs');
-    var firstName = "Kate";
+function addARecord(){
+    var firstName = "Jackson";
     var lastName = "Strachan";
 
     var record = {
       "firstName": firstName
     , "lastName": lastName
     }
-    collection.insert(record,function(err,data){
-        if(err) throw err;
-
-        console.log(JSON.stringify(record));        
-    });
-      
+    mongodbService.add(record);      
 }
+
+
 
 function findTerry(db){
    var results = db.collection('docs')

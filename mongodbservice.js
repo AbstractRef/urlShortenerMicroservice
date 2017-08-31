@@ -7,7 +7,7 @@ function connect(){
   mongodb.MongoClient.connect(MONGODB_URI)
     .then(function (db){
       console.log('Connection established to', MONGODB_URI);
-      console.log(db);
+      //console.log(db);
     })
     .catch(function (err) {
       console.log('Unable to connect to the mongoDB server. Error:', err);
@@ -15,12 +15,17 @@ function connect(){
     });
 }
 
+function add(record){
+  
+}
+
 var asyncDatastore = {
   // set: set,
   // get: get,
   // remove: remove,
   // removeMany: removeMany,
-  connect: connect
+  connect: connect,
+  add : add
 };
 
 module.exports = {
