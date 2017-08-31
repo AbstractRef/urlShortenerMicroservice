@@ -38,7 +38,7 @@ app.route('/_api/package.json')
   
 app.route('/add')
 .get(function(req, res, next){
-  doAdd(); 
+  doAdd(); /
 })
 
 // Connect to Mongo on start
