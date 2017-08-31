@@ -1,22 +1,22 @@
 var MongoClient = require('mongodb').MongoClient
 var tst = "Hello"
+var db1 = null;
 var state = {
   db: null,
 }
-
 exports.connect = function(url, done) {
-  if (state.db) return done()
-
+  //if (db1) return true;
   MongoClient.connect(url, function(err, db) {
+    console.log("connecting ");
     if (err) return done(err)
-    state.db = db
-    done()
+    db1 = db;
+    console.log("db1",db1);
   })
 }
 
 exports.get = function() {
   tst = "Goodbye";
-  return state.db
+  return db1;
 }
 
 exports.getTst = function(){

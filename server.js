@@ -36,6 +36,10 @@ app.route('/_api/package.json')
     });
   });
   
+app.route('/add')
+.get(function(req, res, next){
+  doAdd(); 
+})
 
 // Connect to Mongo on start
 var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
@@ -49,8 +53,11 @@ db.connect(MONGODB_URI, function(err) {
     }
   
 });
+
+
+function doAdd(){
 console.log("tst ", db.getTst()); 
-db.get();
+console.log(db.get());
 console.log("tst ", db.getTst()); 
 
     var firstName = "Jackson";
@@ -61,12 +68,13 @@ console.log("tst ", db.getTst());
     , "lastName": lastName
     }
 
-var collection = db.get().collection('docs'); 
+  var collection = db.get().collection('docs'); 
 collection.insert(record,function(err,data){
         if(err) throw err; 
         console.log(JSON.stringify(record));        
     });
 
+}
 // mongodbService.connect();
 // addARecord();
 // mongodbService.close(); 
