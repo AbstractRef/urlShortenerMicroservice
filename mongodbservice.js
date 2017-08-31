@@ -3,9 +3,11 @@ var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process
 var collection = process.env.COLLECTION;
 
 
+
 function connect(){
   mongodb.MongoClient.connect(MONGODB_URI)
     .then(function (db){
+
       console.log('Connection established to', MONGODB_URI);
       //console.log(db);
     })
@@ -16,7 +18,12 @@ function connect(){
 }
 
 function add(record){
-  
+//       collection.insert(record,function(err,data){
+//         if(err) throw err;
+
+//         console.log(JSON.stringify(record));        
+//     });
+      
 }
 
 var asyncDatastore = {
