@@ -40,14 +40,13 @@ app.route('/add')
 .get(function(req, res, next){
   doAdd();
 })
-
+app.route('/close')
+.get(function(req, res, next){
+  mongodbService.close();
+})
 
 function doAdd(){
-console.log("tst ", db.getTst()); 
-console.log(db.get());
-console.log("tst ", db.getTst()); 
-
-    var firstName = "Jackson";
+    var firstName = "Frankie";
     var lastName = "Strachan";
 
     var record = {
@@ -55,7 +54,7 @@ console.log("tst ", db.getTst());
     , "lastName": lastName
     }
 
-  var collection = db.get().collection('docs'); 
+  var collection = mongodbService.getDb().collection('docs'); 
 collection.insert(record,function(err,data){
         if(err) throw err; 
         console.log(JSON.stringify(record));        
@@ -147,6 +146,7 @@ app.use(function(err, req, res, next) {
 })
 
 app.listen(process.env.PORT, function () {
+  mongodbService.connect();
   console.log('Node.js listening ...');
 });
 

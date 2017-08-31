@@ -25,12 +25,10 @@ function getDb() {
 }
 
 function add(record){
-  console.log("add = ", getDb());
-       getDb().collection(collection).insert(record,function(err,data){
-         if(err) throw err; 
-         console.log(JSON.stringify(record));        
-     });
-     
+  getDb().collection(collection).insert(record,function(err,data){
+    if(err) throw err; 
+      console.log(JSON.stringify(record));        
+    });
 }
 
 
