@@ -97,19 +97,22 @@ function returnShortenedResponse(){
 //    "redirectCount" : 0
 // }
 
-function findByUrl(url){
-   var results = getDb().collection(collection)
+function findByUrl(url) {
+  return new Promise(function(resolve, reject){
+  var results = getDb().collection(collection)
      .find({url: { $eq : url } }, {shortCode: 1, url: 1, createdDate : 1, shortenCount:1, redirectCount:1, _id: 1 } ).toArray(function(err, doc) {
     if(doc) { 
       state.record = doc;
       console.log(doc);
-      return true;      
+      resolve(true);      
     } else {
       console.log(err);
       state.record = null;
-      return false;
+      reject(false);
     }
   });
+
+});
 }
 
 function findByShortCode(shortCode){
