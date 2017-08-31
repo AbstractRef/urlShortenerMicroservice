@@ -44,11 +44,63 @@ function add(record){
     });
 }
 
+function shortCodeUrlInfo(shortCode){
+  if(findByShortCode(shor))  
+}
+
+function redirectShortCode(shortCode){
+  if(findByShortCode(shortCode)){
+     //response.redirect(doc.url)
+  } else {
+    returnNoUrlResponse();
+  }
+}
+
+function returnNoUrlResponse(){
+//response ("No URL");  
+}
+
+function shortenUrl(url){
+  if(findByUrl(url)){
+    incrementShortenCount();
+  } else {
+    if (isUrlValid(url)){
+      createShortCode();
+      storeNewUrl();
+    }
+  }
+    returnShortenedResponse();
+}
+function createShortCode(){
+  
+}
+function storeNewUrl(){
+  
+}
+
+function returnShortenedResponse(){
+  //return response  
+}
+
 function findByUrl(url){
   return true;
 }
 
-function findByShortCode
+function findByShortCode(shortCode){
+  return true;
+}
+
+function incrementVisitCount(){
+  return true;
+}
+
+function incrementShortenCount(){
+  return true;
+}
+
+function isUrlValid(url){
+  return true;
+}
 
 var asyncDatastore = {
   // set: set,
