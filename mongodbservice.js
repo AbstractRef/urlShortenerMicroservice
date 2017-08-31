@@ -1,13 +1,16 @@
 var mongodb = require('mongodb');
 var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
 var collection = process.env.COLLECTION;
-var db1
+
+var state1 = {
+  db: null,
+}
 
 
 function connect(){
   mongodb.MongoClient.connect(MONGODB_URI)
     .then(function (db){
-    db1 = db;
+     state1.db = db; 
       console.log('Connection established to', MONGODB_URI);
       //console.log(db);
     })
@@ -17,17 +20,28 @@ function connect(){
     });
 }
 
-function add(record){
-      db1.collection(collection).insert(record,function(err,data){
-        if(err) throw err;
-
-        console.log(JSON.stringify(record));        
-    });
-      
+function getDb() {
+  return state1.db;
 }
 
+function add(record){
+  console.log("add = ", getDb());
+//       getDb().collection(collection).insert(record,function(err,data){
+//         if(err) throw err; 
+
+//         console.log(JSON.stringify(record));        
+//     });
+     
+}
+
+
 function close(){
-  db1.close();
+  if (state1.db) {
+    state1.db.close(function(err, result) {
+      state1.db = null
+      state1.mode = null
+    });
+  }
 }
 
 var asyncDatastore = {
@@ -37,9 +51,10 @@ var asyncDatastore = {
   // removeMany: removeMany,
   connect: connect,
   close: close,
+  getDb : getDb,
   add : add
 };
-
+ 
 module.exports = {
   async: asyncDatastore
 };

@@ -9,6 +9,7 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var mongodbService = require('./mongodbservice').async; 
+var db = require('./db');
 
 
 
