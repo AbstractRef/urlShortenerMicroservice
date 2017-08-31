@@ -47,7 +47,10 @@ app.route('/close')
 
 app.route('/find')
 .get(function(req, res, next){
-  console.log("find - ", mongodbService.findByUrl("http://www.google.com"));
+  mongodbService.findByUrl("http://www.google.com").then(function(result){
+    
+  }
+             
 })
 
 function doAdd(){
@@ -65,7 +68,8 @@ collection.insert(record,function(err,data){
         console.log(JSON.stringify(record));        
     });
 
-}
+} 
+
 // mongodbService.connect();
 // addARecord();
 // mongodbService.close(); 

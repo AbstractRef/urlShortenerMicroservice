@@ -4,6 +4,7 @@ var collection = process.env.COLLECTION;
 
 var state = {
   db: null,
+  record: null
 }
 
 function connect(){
@@ -99,12 +100,12 @@ function returnShortenedResponse(){
 function findByUrl(url){
    var results = getDb().collection(collection)
      .find({url: { $eq : url } }, {shortCode: 1, url: 1, createdDate : 1, shortenCount:1, redirectCount:1, _id: 1 } ).toArray(function(err, doc) {
-     
     if(doc) { 
       state.record = doc;
-      c
+      console.log(doc);
       return true;      
     } else {
+      console.log(err);
       state.record = null;
       return false;
     }
