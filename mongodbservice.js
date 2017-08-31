@@ -45,7 +45,13 @@ function add(record){
 }
 
 function shortCodeUrlInfo(shortCode){
-  if(findByShortCode(shor))  
+  if(findByShortCode(shortCode)){
+    returnInfoResponse();
+  }  
+}
+
+function returnInfoResponse(){
+  //response json of doc info
 }
 
 function redirectShortCode(shortCode){
@@ -82,8 +88,27 @@ function returnShortenedResponse(){
   //return response  
 }
 
+// {
+//   "shortCode" : "",
+//   "url": "",
+//   "createdDate" : "",
+//   "shortenCount" : 1,
+//    "redirectCount" : 0
+// }
+
 function findByUrl(url){
-  return true;
+   var results = getDb().collection(collection)
+     .find({url: { $eq : url } }, {shortCode: 1, url: 1, createdDate : 1, shortenCount:1, redirectCount:1, _id: 1 } ).toArray(function(err, doc) {
+     
+    if(doc) { 
+      state.record = doc;
+      c
+      return true;      
+    } else {
+      state.record = null;
+      return false;
+    }
+  });
 }
 
 function findByShortCode(shortCode){
@@ -110,7 +135,8 @@ var asyncDatastore = {
   connect: connect,
   close: close,
   getDb : getDb,
-  add : add
+  add : add,
+  findByUrl : findByUrl
 };
  
 module.exports = {

@@ -45,6 +45,11 @@ app.route('/close')
   mongodbService.close();
 })
 
+app.route('/find')
+.get(function(req, res, next){
+  console.log("find - ", mongodbService.findByUrl("http://www.google.com"));
+})
+
 function doAdd(){
     var firstName = "Frankie";
     var lastName = "Strachan";
@@ -93,21 +98,6 @@ function addARecord(){
 
 
 
-function findTerry(db){
-   var results = db.collection('docs')
-     .find({firstName: { $eq : "Kate" } }, {firstName: 1, lastName: 1, _id: 1 } ).toArray(function(err, doc) {
-     
-    if(doc) { 
-        console.log(doc);
-      updateFindCount(db,doc[0]._id); 
-
-          
-    } else{
-      console.log(err); 
-    }
-  });
-}
-
 function updateFindCount(db, uid){
             console.log("id = ", uid);
      
@@ -136,6 +126,7 @@ app.use(function(req, res, next){
   res.type('txt').send('Not found');
 });
 
+
 // Error Middleware
 app.use(function(err, req, res, next) {
   if(err) {
@@ -145,8 +136,8 @@ app.use(function(err, req, res, next) {
   }  
 })
 
-// app.listen(process.env.PORT, function () {
-//   mongodbService.connect();
-//   console.log('Node.js listening ...');
-// });
+app.listen(process.env.PORT, function () {
+  mongodbService.connect();
+  console.log('Node.js listening ...');
+});
 
