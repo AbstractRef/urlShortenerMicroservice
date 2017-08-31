@@ -39,6 +39,7 @@ app.route('/_api/package.json')
 
 mongodbService.connect();
 addARecord();
+mongodbService.close(); 
 
 // // Use connect method to connect to the Server 
 //   mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
