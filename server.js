@@ -49,7 +49,7 @@ app.route('/_api/package.json')
     console.log('Connection established to', MONGODB_URI);
     // do some work here with the database.
    //addARecord(db);
-    findTerry(db); 
+    //findTerry(db); 
     //Close connection
     setTimeout(function(){db.close();}, 1000); 
     
