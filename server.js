@@ -10,6 +10,8 @@ var express = require('express');
 var app = express();
 
 var mongodb = require('mongodb');
+//var mongodbService = require('./mongodb-service').async;  
+var datastore = require("mongodbservice"); 
 var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
 var collection;
 
@@ -39,22 +41,22 @@ app.route('/_api/package.json')
   });
   
 
+mongodbService.connect();
 
-
-// Use connect method to connect to the Server
-  mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
-  if (err) {
-    console.log('Unable to connect to the mongoDB server. Error:', err);
-  } else {
-    console.log('Connection established to', MONGODB_URI);
-    // do some work here with the database.
-   //addARecord(db);
-    //findTerry(db); 
-    //Close connection
-    setTimeout(function(){db.close();}, 1000); 
+// // Use connect method to connect to the Server 
+//   mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
+//   if (err) {
+//     console.log('Unable to connect to the mongoDB server. Error:', err);
+//   } else {
+//     console.log('Connection established to', MONGODB_URI);
+//     // do some work here with the database.
+//    //addARecord(db);
+//     //findTerry(db); 
+//     //Close connection
+//     setTimeout(function(){db.close();}, 1000); 
     
-  }
-});
+//   }
+// });
 
 function addARecord(db){
    var collection = db.collection('docs');
