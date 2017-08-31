@@ -10,7 +10,7 @@ var express = require('express');
 var app = express();
 
 var mongodb = require('mongodb');
-//var mongodbService = require('./mongodb-service').async;  
+var mongodbService = require('mongodbservice').async;  
 var datastore = require("mongodbservice"); 
 var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
 var collection;
