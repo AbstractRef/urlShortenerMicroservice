@@ -38,9 +38,38 @@ app.route('/_api/package.json')
   });
   
 
-mongodbService.connect();
-addARecord();
-mongodbService.close(); 
+// Connect to Mongo on start
+var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
+
+db.connect(MONGODB_URI, function(err) { 
+  if (err) {
+    console.log('Unable to connect to Mongo.')
+    process.exit(1)
+  } else {
+      console.log('Listening  ...');
+    }
+  
+}); 
+
+console.log("tst ", db.get()); 
+
+    var firstName = "Jackson";
+    var lastName = "Strachan";
+
+    var record = {
+      "firstName": firstName
+    , "lastName": lastName
+    }
+
+var collection = db.get().collection('docs'); 
+collection.insert(record,function(err,data){
+        if(err) throw err; 
+        console.log(JSON.stringify(record));        
+    });
+
+// mongodbService.connect();
+// addARecord();
+// mongodbService.close(); 
 
 // // Use connect method to connect to the Server 
 //   mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
