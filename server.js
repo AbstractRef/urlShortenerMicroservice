@@ -38,21 +38,8 @@ app.route('/_api/package.json')
   
 app.route('/add')
 .get(function(req, res, next){
-  doAdd(); /
+  doAdd();
 })
-
-// Connect to Mongo on start
-var MONGODB_URI = 'mongodb://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST+':'+process.env.DB_PORT+'/'+process.env.DB;
-
-db.connect(MONGODB_URI, function(err) { 
-  if (err) {
-    console.log('Unable to connect to Mongo.')
-    process.exit(1)
-  } else {
-      console.log('Listening ...');
-    }
-  
-});
 
 
 function doAdd(){
