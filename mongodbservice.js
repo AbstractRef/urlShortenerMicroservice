@@ -101,14 +101,15 @@ function findByUrl(url) {
   return new Promise(function(resolve, reject){
   var results = getDb().collection(collection)
      .find({url: { $eq : url } }, {shortCode: 1, url: 1, createdDate : 1, shortenCount:1, redirectCount:1, _id: 1 } ).toArray(function(err, doc) {
-    if(doc) { 
+       console.log(doc.length);
+    if(doc.length>0) { 
       state.record = doc;
       console.log(doc);
       resolve(true);      
     } else {
       console.log(err);
       state.record = null;
-      reject(false);
+      resolve(false);
     }
   });
 

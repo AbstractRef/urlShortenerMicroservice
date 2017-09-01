@@ -47,7 +47,7 @@ app.route('/close')
 
 app.route('/find')
 .get(function(req, res, next){
-  mongodbService.findByUrl("http://www.google1.com").then(function(result){
+  mongodbService.findByUrl("http://www.google.com").then(function(result){
     console.log("find = ", result);
   })
              
