@@ -38,6 +38,11 @@ function getDb() {
   return state.db;
 }
 
+
+function get() {
+  return state.record;
+}
+
 function add(record){
   getDb().collection(collection).insert(record,function(err,data){
     if(err) throw err; 
@@ -98,14 +103,15 @@ function returnShortenedResponse(){
 // }
 
 function findByUrl(url) {
-  var returnObjMap = {
-			shortCode: 1,
-			url: 1,
-			createdDate: 1,
-			shortenCount: 1,
-			redirectCount: 0,
-			_id: 1
-		};
+  var returnObjMap = {};
+		// {
+		// 	shortCode: 1,
+		// 	url: 1,
+		// 	createdDate: 1,
+		// 	shortenCount: 1,
+		// 	redirectCount: 0,
+		// 	_id: 0
+		// };
 	return new Promise(function (resolve, reject) {
 		getDb().collection(collection)
 		.find({
@@ -113,13 +119,10 @@ function findByUrl(url) {
 				$eq: url
 			}
 		}, returnObjMap).toArray(function (err, doc) {
-			console.log(doc.length);
 			if (doc.length > 0) {
 				state.record = doc;
-				console.log(doc);
 				resolve(true);
 			} else {
-				console.log(err);
 				state.record = null;
 				resolve(false);
 			}
@@ -153,6 +156,7 @@ var asyncDatastore = {
   connect: connect,
   close: close,
   getDb : getDb,
+  get : get,
   add : add,
   findByUrl : findByUrl
 };
