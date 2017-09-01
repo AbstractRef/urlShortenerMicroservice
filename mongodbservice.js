@@ -165,13 +165,12 @@ return new Promise(function (resolve, reject) {
 		getDb().collection(collection)
 		.find({
 			shortCode: {
-				$eq: +shortCode
+				$eq: shortCode
 			}
 		}, {}).toArray(function (err, doc) {
 			if(err){
 				reject(err);
 			}
-      console.log("doc ", doc);
 			if (doc.length > 0) {
 				state.record = doc;
         console.log("Found record - ", state.record);

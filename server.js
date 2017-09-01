@@ -42,13 +42,13 @@ app.route('/:shortCode')
   mongodbService.redirectShortCode(req.params.shortCode).then(function(url){    
     res.redirect(url);
   }).catch(function(err){
-    res.send("no url")
+    res.send(err)
   })
 })
 
-app.route('/add/:url')
+app.route('/add/*')
 .get(function(req, res, next){
-  mongodbService.shortenUrl(req.params.url).then(function(response){
+  mongodbService.shortenUrl(req.param(0)).then(function(response){
     res.send(response);
   })
 })
