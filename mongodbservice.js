@@ -1,6 +1,8 @@
 var mongodb = require('mongodb');
 var MONGODB_URI = 'mongodb://' + process.env.USER + ':' + process.env.PASS + '@' + process.env.HOST + ':' + process.env.DB_PORT + '/' + process.env.DB;
 var collection = process.env.COLLECTION;
+var http = require('http'),
+    url = require('url');
 
 var state = {
 	db: null,
@@ -218,8 +220,17 @@ function incrementShortenCount() {
 }
 
 function isUrlValid(url) {
-	return true;
-} 
+  var options = {
+    method: 'HEAD',
+    host: url.parse(url).host,
+    path: url.parse(url).pathname
+  };
+  var req = http.request(options, function (r) {
+    console.log("http" = , req);
+  });
+    return true;
+}
+                               
 
 var asyncDatastore = {
 	// set: set,
