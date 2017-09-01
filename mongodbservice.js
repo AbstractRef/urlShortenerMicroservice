@@ -74,21 +74,31 @@ function returnNoUrlResponse() {
 }
 
 function shortenUrl(url) {
-  console.log("URL = ", url); 
+  return new Promise(function (resolve, reject) {
   
-	findByUrl(url).then(function(result){
-    if(result){
-		incrementShortenCount();
-	} else {
-		if (isUrlValid(url)) {
-			createShortCode();
-			storeNewUrl();
-		}
-	}
+	  findByUrl(url).then(function(result){
+      if(result){
+  		  incrementShortenCount();
+  	  } else {
+  		  if (isUrlValid(url)) {
+  			  createShortCode();
+  			  storeNewUrl();
+  		  }
+  	  }
+      
+    returnShortenedResponse();
+    console.log("reolve responsed", state.record);
+    resolve(state.record);
+      
+    }).catch(function(err){
+      console.err(err);
+      throw err;
+    });
 
   });
-returnShortenedResponse();
+  
 }
+
 function createShortCode() {
 	console.log("New Short Code");
 }
@@ -97,7 +107,7 @@ function storeNewUrl() {
 }
 
 function returnShortenedResponse() {
-  res.send(state.record);
+
 	//return response
 }
 
@@ -132,6 +142,7 @@ function findByUrl(url) {
       console.log(doc);
 			if (doc.length > 0) {
 				state.record = doc;
+        console.log("Found record - ", state.record);
 				resolve(true);
 			} else {
 				state.record = null;

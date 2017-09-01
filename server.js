@@ -39,7 +39,9 @@ app.route('/_api/package.json')
 
 app.route('/add/:url')
 .get(function(req, res, next){
-  mongodbService.shortenUrl(req.params.url)
+  mongodbService.shortenUrl(req.params.url).then(function(response){
+    res.send(response);
+  })
 })
 app.route('/close')
 .get(function(req, res, next){
