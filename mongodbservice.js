@@ -1,7 +1,7 @@
 var mongodb = require('mongodb');
 var MONGODB_URI = 'mongodb://' + process.env.USER + ':' + process.env.PASS + '@' + process.env.HOST + ':' + process.env.DB_PORT + '/' + process.env.DB;
 var collection = process.env.COLLECTION;
-var urlExists = require('url-exists');
+var validUrl = require('valid-url');
 
 var state = {
 	db: null,
@@ -87,7 +87,8 @@ function shortenUrl(url) {
       if(result){
   		  incrementShortenCount();
   	  } else {
-  		  if (isUrlValid(url)) {    
+  		  if (isUrlValid(url)) { 
+          console.log("Store URL");
   			  storeNewUrl(url);
   		  }
   	  }
@@ -219,10 +220,12 @@ function incrementShortenCount() {
 }
 
 function isUrlValid(urlToCheck) {
-  console.log("checking url ", urlToCheck);
-  urlExists(urlToCheck, function(err, exists) {
-  return (exists); 
-});
+if (validUrl.isUri(urlToCheck)) {
+    return true;
+} 
+else {
+return false;
+}
 }
                                
 

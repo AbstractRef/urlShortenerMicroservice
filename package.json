@@ -3,7 +3,7 @@
 	"dependencies": {
     "mongodb": "*",
 		"express": "^4.14.0",
-    "url-exists":"*"
+    "valid-url":"*"
 	},
 	"main": "server.js",
 	"scripts": {
