@@ -62,11 +62,14 @@ function returnInfoResponse() {
 }
 
 function redirectShortCode(shortCode) {
-	if (findByShortCode(shortCode)) {
-		//response.redirect(doc.url)
-	} else {
-		returnNoUrlResponse();
-	}
+  return new Promise(function (resolve, reject) {
+    
+	  findByShortCode(shortCode).then(function(result) {
+    if (result) {
+      return state.record[0].url;
+	  } else {
+		  returnNoUrlResponse();
+	  }
 }
 
 function returnNoUrlResponse() {
@@ -80,8 +83,7 @@ function shortenUrl(url) {
       if(result){
   		  incrementShortenCount();
   	  } else {
-  		  if (isUrlValid(url)) {
-          c
+  		  if (isUrlValid(url)) {    
   			  storeNewUrl(url);
   		  }
   	  }
@@ -108,9 +110,9 @@ function storeNewUrl(url) {
     }
 
   getDb().collection(collection) 
-.insert(record,function(err,data){
+.insert(state.record,function(err,data){
         if(err) throw err; 
-        console.log(JSON.stringify(record));        
+        console.log(JSON.stringify(state.record));        
     });
 
 	console.log("Stored new URL");
@@ -120,13 +122,6 @@ function createShortenedResponse() {
   return state.record;
 }
 
-// {
-//   "shortCode" : "",
-//   "url": "",
-//   "createdDate" : "",
-//   "shortenCount" : 1,
-//    "redirectCount" : 0
-// }
 
 function findByUrl(url) {
 	var returnObjMap = {};
@@ -171,7 +166,21 @@ function incrementVisitCount() {
 }
 
 function incrementShortenCount() {
-	return true;
+   getDb().collection(collection).update(
+      {
+        _id: state.record[0]._id
+      },
+      {
+        $inc:{ "shortenedCount" : 1}
+      }
+      ,function(err,data){
+        console.log("error", err);
+        console.log("data", data);
+        if(err) throw err;
+      });
+  
+  state.record.shortenedCount += 1;
+	//return true;
 }
 
 function isUrlValid(url) {

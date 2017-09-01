@@ -37,10 +37,17 @@ app.route('/_api/package.json')
   });
   
 
+app.route('/:shortCode')
+.get(function(req, res, next){
+  mongodbService.redirectShortCode(req.params.shortCode).then(function(response){
+    res.send(response);
+  })
+})
+
 app.route('/add/:url')
 .get(function(req, res, next){
-  mongodbService.shortenUrl(req.params.url).then(function(response){
-    res.send(response);
+  mongodbService.shortenUrl(req.params.url).then(function(url){
+    res.redirect(url);
   })
 })
 app.route('/close')
@@ -48,84 +55,7 @@ app.route('/close')
   mongodbService.close();
 })
 
-app.route('/find')
-.get(function(req, res, next){
-  mongodbService.findByUrl("http://www.google.com").then(function(result){
-    console.log("find = ", result);
-  }).then(function(){
-      console.log(mongodbService.get());
-  })
-  mongodbService.close();
 
-  res.send("found done");
-             
-})
-
-function doAdd(){
-    var firstName = "Frankie";
-    var lastName = "Strachan";
-
-    var record = {
-      "firstName": firstName
-    , "lastName": lastName
-    }
-
-  var collection = mongodbService.getDb().collection('docs'); 
-collection.insert(record,function(err,data){
-        if(err) throw err; 
-        console.log(JSON.stringify(record));        
-    });
-
-} 
-
-// mongodbService.connect();
-// addARecord();
-// mongodbService.close(); 
-
-// // Use connect method to connect to the Server 
-//   mongodb.MongoClient.connect(MONGODB_URI, function (err, db) {
-//   if (err) {
-//     console.log('Unable to connect to the mongoDB server. Error:', err);
-//   } else {
-//     console.log('Connection established to', MONGODB_URI);
-//     // do some work here with the database.
-//    //addARecord(db);
-//     //findTerry(db); 
-//     //Close connection
-//     setTimeout(function(){db.close();}, 1000); 
-    
-//   }
-// });
-
-function addARecord(){
-    var firstName = "Jackson";
-    var lastName = "Strachan";
-
-    var record = {
-      "firstName": firstName
-    , "lastName": lastName
-    }
-    mongodbService.add(record);      
-}
-
-
-
-function updateFindCount(db, uid){
-            console.log("id = ", uid);
-     
-    db.collection('docs').update(
-      {
-        _id: uid
-      },
-      {
-        $inc:{ "findCount" : 1}
-      }
-      ,function(err,data){
-        console.log("error", err);
-        console.log("data", data);
-        if(err) throw err;
-      });
-}
 
 app.route('/')
     .get(function(req, res) {
