@@ -39,15 +39,17 @@ app.route('/_api/package.json')
 
 app.route('/:shortCode')
 .get(function(req, res, next){
-  mongodbService.redirectShortCode(req.params.shortCode).then(function(response){
-    res.send(response);
+  mongodbService.redirectShortCode(req.params.shortCode).then(function(url){    
+    res.redirect(url);
+  }).catch(function(err){
+    res.send("no url")
   })
 })
 
 app.route('/add/:url')
 .get(function(req, res, next){
-  mongodbService.shortenUrl(req.params.url).then(function(url){
-    res.redirect(url);
+  mongodbService.shortenUrl(req.params.url).then(function(response){
+    res.send(response);
   })
 })
 app.route('/close')

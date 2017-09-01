@@ -62,14 +62,17 @@ function returnInfoResponse() {
 }
 
 function redirectShortCode(shortCode) {
+  console.log("Redirect ", shortCode)
   return new Promise(function (resolve, reject) {
     
 	  findByShortCode(shortCode).then(function(result) {
-    if (result) {
-      return state.record[0].url;
-	  } else {
-		  returnNoUrlResponse();
-	  }
+      if (result) {
+        resolve(state.record[0].url);
+  	  } else {
+  		  reject(returnNoUrlResponse());
+  	  }
+    });
+  });
 }
 
 function returnNoUrlResponse() {
@@ -158,7 +161,28 @@ function findByUrl(url) {
 }
 
 function findByShortCode(shortCode) {
-	return true;
+return new Promise(function (resolve, reject) {
+		getDb().collection(collection)
+		.find({
+			shortCode: {
+				$eq: +shortCode
+			}
+		}, {}).toArray(function (err, doc) {
+			if(err){
+				reject(err);
+			}
+      console.log("doc ", doc);
+			if (doc.length > 0) {
+				state.record = doc;
+        console.log("Found record - ", state.record);
+				resolve(true);
+			} else {
+				state.record = null;
+				resolve(false);
+			}			
+		});
+
+	});
 }
 
 function incrementVisitCount() {
@@ -185,7 +209,7 @@ function incrementShortenCount() {
 
 function isUrlValid(url) {
 	return true;
-}
+} 
 
 var asyncDatastore = {
 	// set: set,
@@ -198,7 +222,8 @@ var asyncDatastore = {
 	get: get,
 	add: add,
 	findByUrl: findByUrl,
-  shortenUrl : shortenUrl
+  shortenUrl : shortenUrl,
+  redirectShortCode : redirectShortCode 
 };
 
 module.exports = {
