@@ -50,6 +50,8 @@ app.route('/find')
   mongodbService.findByUrl("http://www.google.com").then(function(result){
     console.log("find = ", result);
   })
+  mongodbService.close();
+  res.send("found done");
              
 })
 
