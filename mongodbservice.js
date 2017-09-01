@@ -74,8 +74,10 @@ function returnNoUrlResponse() {
 }
 
 function shortenUrl(url) {
-  console.log("URL = ", url);
-	if (findByUrl(url)) {
+  console.log("URL = ", url); 
+  
+	findByUrl(url).then(function(result){
+    if(result){
 		incrementShortenCount();
 	} else {
 		if (isUrlValid(url)) {
@@ -83,7 +85,9 @@ function shortenUrl(url) {
 			storeNewUrl();
 		}
 	}
-	returnShortenedResponse();
+
+  });
+returnShortenedResponse();
 }
 function createShortCode() {
 	console.log("New Short Code");
@@ -93,6 +97,7 @@ function storeNewUrl() {
 }
 
 function returnShortenedResponse() {
+  res.send(state.record);
 	//return response
 }
 
@@ -124,6 +129,7 @@ function findByUrl(url) {
 			if(err){
 				reject(err);
 			}
+      console.log(doc);
 			if (doc.length > 0) {
 				state.record = doc;
 				resolve(true);
