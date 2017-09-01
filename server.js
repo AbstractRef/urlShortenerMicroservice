@@ -36,9 +36,10 @@ app.route('/_api/package.json')
     });
   });
   
-app.route('/add')
+
+app.route('/add/:url')
 .get(function(req, res, next){
-  monogodbService.shortenUrl()
+  mongodbService.shortenUrl(req.params.url)
 })
 app.route('/close')
 .get(function(req, res, next){

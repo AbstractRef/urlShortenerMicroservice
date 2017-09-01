@@ -74,6 +74,7 @@ function returnNoUrlResponse() {
 }
 
 function shortenUrl(url) {
+  console.log("URL = ", url);
 	if (findByUrl(url)) {
 		incrementShortenCount();
 	} else {
@@ -161,7 +162,8 @@ var asyncDatastore = {
 	getDb: getDb,
 	get: get,
 	add: add,
-	findByUrl: findByUrl
+	findByUrl: findByUrl,
+  shortenUrl : shortenUrl
 };
 
 module.exports = {
