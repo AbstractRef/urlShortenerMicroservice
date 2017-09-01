@@ -62,11 +62,11 @@ function returnInfoResponse() {
 }
 
 function redirectShortCode(shortCode) {
-  console.log("Redirect ", shortCode)
   return new Promise(function (resolve, reject) {
     
 	  findByShortCode(shortCode).then(function(result) {
       if (result) {
+        incrementVisitCount();
         resolve(state.record[0].url);
   	  } else {
   		  reject(returnNoUrlResponse());
@@ -186,7 +186,18 @@ return new Promise(function (resolve, reject) {
 }
 
 function incrementVisitCount() {
-	return true;
+getDb().collection(collection).update(
+      {
+        _id: state.record[0]._id
+      },
+      {
+        $inc:{ "redirectCount" : 1}
+      }
+      ,function(err,data){
+        if(err) throw err;
+      });
+  
+  state.record.redirectCount += 1;
 }
 
 function incrementShortenCount() {
