@@ -81,34 +81,43 @@ function shortenUrl(url) {
   		  incrementShortenCount();
   	  } else {
   		  if (isUrlValid(url)) {
-  			  createShortCode();
-  			  storeNewUrl();
+          c
+  			  storeNewUrl(url);
   		  }
   	  }
       
-    returnShortenedResponse();
-    console.log("reolve responsed", state.record);
-    resolve(state.record);
+    resolve(createShortenedResponse());
       
     }).catch(function(err){
       console.err(err);
       throw err;
-    });
-
+    })
   });
-  
 }
 
 function createShortCode() {
-	console.log("New Short Code");
+   return Math.random().toString(36).substr(2, 4);
+
 }
-function storeNewUrl() {
+function storeNewUrl(url) {
+   state.record = {
+    "shortCode": createShortCode(),
+    "url": url,
+    "shortenedCount": 1,
+    "redirectCount": 0
+    }
+
+  getDb().collection(collection) 
+.insert(record,function(err,data){
+        if(err) throw err; 
+        console.log(JSON.stringify(record));        
+    });
+
 	console.log("Stored new URL");
 }
 
-function returnShortenedResponse() {
-
-	//return response
+function createShortenedResponse() {
+  return state.record;
 }
 
 // {
