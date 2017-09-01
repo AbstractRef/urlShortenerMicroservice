@@ -1,8 +1,7 @@
 var mongodb = require('mongodb');
 var MONGODB_URI = 'mongodb://' + process.env.USER + ':' + process.env.PASS + '@' + process.env.HOST + ':' + process.env.DB_PORT + '/' + process.env.DB;
 var collection = process.env.COLLECTION;
-var http = require('http'),
-    url = require('url');
+var urlExists = require('url-exists');
 
 var state = {
 	db: null,
@@ -219,16 +218,11 @@ function incrementShortenCount() {
 	//return true;
 }
 
-function isUrlValid(url) {
-  var options = {
-    method: 'HEAD',
-    host: url.parse(url).host,
-    path: url.parse(url).pathname
-  };
-  var req = http.request(options, function (r) {
-    console.log("http" = , req);
-  });
-    return true;
+function isUrlValid(urlToCheck) {
+  console.log("checking url ", urlToCheck);
+  urlExists(urlToCheck, function(err, exists) {
+  return (exists); 
+});
 }
                                
 
