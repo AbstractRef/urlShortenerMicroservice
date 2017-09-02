@@ -43,15 +43,6 @@ function get() {
     return state.record;
 }
 
-// function add(record) {
-//     getDb().collection(collection).insert(record, function(err, data) {
-//         if (err)
-//             throw err;
-//         console.log(JSON.stringify(record));
-//     });
-// }
-
-
 function redirectShortCode(shortCode) {
     return new Promise(function(resolve, reject) {
 
@@ -67,9 +58,9 @@ function redirectShortCode(shortCode) {
 }
 
 function returnNoUrlResponse(shortCode) {
-  var err = {
-    "Error" : "No URL defined for short code " + shortCode
-  }
+    var err = {
+        "Error": "No URL defined for short code " + shortCode
+    }
     return JSON.stringify(err);
 }
 
@@ -117,9 +108,9 @@ function createShortenedResponse() {
 }
 
 function createMalformedUrlError(url) {
-  var err = {
-    "Error" : url + " is not a valid URL"
-  }
+    var err = {
+        "Error": url + " is not a valid URL"
+    }
     return JSON.stringify(err);
 }
 
@@ -135,10 +126,8 @@ function findByUrl(url) {
                 if (err) {
                     reject(err);
                 }
-                console.log(doc);
                 if (doc.length > 0) {
                     state.record = doc;
-                    console.log("Found record - ", state.record);
                     resolve(true);
                 } else {
                     state.record = null;
@@ -162,7 +151,6 @@ function findByShortCode(shortCode) {
                 }
                 if (doc.length > 0) {
                     state.record = doc;
-                    console.log("Found record - ", state.record);
                     resolve(true);
                 } else {
                     state.record = null;
@@ -195,8 +183,6 @@ function incrementShortenCount() {
             "shortenedCount": 1
         }
     }, function(err, data) {
-        console.log("error", err);
-        console.log("data", data);
         if (err) throw err;
     });
 
@@ -209,7 +195,6 @@ function isUrlValid(urlToCheck) {
     var url = new RegExp(urlRegex, 'i');
     return urlToCheck.length < 2083 && url.test(urlToCheck);
 }
-
 
 var mongoUrlDatastore = {
     connect: connect,
