@@ -50,6 +50,8 @@ app.route('/add/*')
 .get(function(req, res, next){
   mongodbService.shortenUrl(req.param(0)).then(function(response){
     res.send(response);
+  }).catch(function(err){
+    res.send(err);
   })
 })
 app.route('/close')
