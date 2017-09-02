@@ -8,7 +8,7 @@
 var fs = require('fs');
 var express = require('express');
 var app = express();
-var mongodbService = require('./mongodbservice').async; 
+var mongodbService = require('./mongodbservice').mongoUrlDatastore; 
 const db = require('./db');
 
 

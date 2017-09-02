@@ -60,14 +60,17 @@ function redirectShortCode(shortCode) {
                 incrementVisitCount();
                 resolve(state.record[0].url);
             } else {
-                reject(returnNoUrlResponse());
+                reject(returnNoUrlResponse(shortCode));
             }
         });
     });
 }
 
-function returnNoUrlResponse() {
-    return '{ "Error:","No }'
+function returnNoUrlResponse(shortCode) {
+  var err = {
+    "Error" : "No URL defined for short code " + shortCode
+  }
+    return JSON.stringify(err);
 }
 
 function shortenUrl(url) {
@@ -77,17 +80,13 @@ function shortenUrl(url) {
             if (result) {
                 incrementShortenCount();
             } else {
-                console.log("is valid ", isUrlValid(url));
                 if (isUrlValid(url)) {
-                    console.log("Store URL");
                     storeNewUrl(url);
                 } else {
-                    reject("Malformed URL");
+                    reject(createMalformedUrlError(url));
                 }
             }
-
             resolve(createShortenedResponse());
-
         }).catch(function(err) {
             console.err(err);
             throw err;
@@ -96,8 +95,7 @@ function shortenUrl(url) {
 }
 
 function createShortCode() {
-    return Math.random().toString(36).substr(2, 4);
-
+    return Math.random().toString(36).substr(2, 5);
 }
 
 function storeNewUrl(url) {
@@ -110,28 +108,23 @@ function storeNewUrl(url) {
 
     getDb().collection(collection)
         .insert(state.record, function(err, data) {
-            if (err) throw err;
-            console.log(JSON.stringify(state.record));
+            if (err) throw err
         });
-
-    console.log("Stored new URL");
 }
 
 function createShortenedResponse() {
     return state.record;
 }
 
+function createMalformedUrlError(url) {
+  var err = {
+    "Error" : url + " is not a valid URL"
+  }
+    return JSON.stringify(err);
+}
 
 function findByUrl(url) {
     var returnObjMap = {};
-    // {
-    // 	shortCode: 1,
-    // 	url: 1,
-    // 	createdDate: 1,
-    // 	shortenCount: 1,
-    // 	redirectCount: 0,
-    // 	_id: 0
-    // };
     return new Promise(function(resolve, reject) {
         getDb().collection(collection)
             .find({
@@ -218,21 +211,16 @@ function isUrlValid(urlToCheck) {
 }
 
 
-var asyncDatastore = {
-    // set: set,
-    // get: get,
-    // remove: remove,
-    // removeMany: removeMany,
+var mongoUrlDatastore = {
     connect: connect,
     close: close,
     getDb: getDb,
     get: get,
-    // add: add,
     findByUrl: findByUrl,
     shortenUrl: shortenUrl,
     redirectShortCode: redirectShortCode
 };
 
 module.exports = {
-    async: asyncDatastore
+    mongoUrlDatastore: mongoUrlDatastore
 };
